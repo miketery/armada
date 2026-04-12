@@ -1,11 +1,11 @@
 import asyncio
 
-from armada.database import async_session
-from armada.modules.users.manager import UserManager
+from armada.db import get_database
+from armada.managers.users import UserManager
 
 
 async def main():
-    async with async_session() as session:
+    async with get_database() as session:
         manager = UserManager(session)
         existing = await manager.get_by_email("michael@tmisha.com")
         if existing:

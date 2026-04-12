@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from armada.modules.users import router as users_router
+from armada.routers.users import router as users_router
 
 app = FastAPI(title="Armada", version="0.1.0")
 

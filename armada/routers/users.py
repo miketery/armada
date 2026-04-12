@@ -1,32 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from armada.database import get_session
-from armada.modules.users.manager import UserManager
-from armada.modules.users.models import User
-from armada.modules.users.types import TokenResponse, UserCreate, UserLogin, UserResponse
+from armada.auth.dependencies import CurrentUser, Database, get_manager
+from armada.managers.users import UserManager
+from armada.types.users import TokenResponse, UserCreate, UserLogin, UserResponse
 
 router = APIRouter(prefix="/users", tags=["users"])
-bearer_scheme = HTTPBearer()
-
-
-def get_manager(session: AsyncSession = Depends(get_session)) -> UserManager:
-    return UserManager(session)
-
-
-async def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
-    manager: UserManager = Depends(get_manager),
-) -> User:
-    user = await manager.get_user_by_token(credentials.credentials)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid or expired token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
 
 
 @router.post("/register", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
@@ -54,5 +32,5 @@ async def login(data: UserLogin, manager: UserManager = Depends(get_manager)):
 
 
 @router.get("/me", response_model=UserResponse)
-async def me(current_user: User = Depends(get_current_user)):
+async def me(current_user: CurrentUser):
     return current_user

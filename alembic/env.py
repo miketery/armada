@@ -6,8 +6,8 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
-from armada.database import Base
-from armada.modules.users.models import Session, User  # noqa: F401
+from armada.db import AlchemyBase as Base
+from armada.models.users import Session, User  # noqa: F401
 
 config = context.config
 

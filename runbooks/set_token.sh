@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 cd "$(dirname "$0")/.."
 
@@ -11,14 +10,11 @@ fi
 
 response=$(curl -s -X POST http://localhost:8000/users/login \
     -H "Content-Type: application/json" \
-    -d "{\"email\": \"$USERNAME\", \"password\": \"$PASSWORD\"}")
+    -d "{\"email\": \"$ARMADA_USERNAME\", \"password\": \"$PASSWORD\"}")
 
-token=$(echo "$response" | python3 -c "import sys, json; print(json.load(sys.stdin)['token'])" 2>/dev/null)
+TOKEN=$(echo "$response" | python3 -c "import sys, json; print(json.load(sys.stdin)['token'])" 2>/dev/null)
 
-if [ -z "$token" ]; then
+if [ -z "$TOKEN" ]; then
     echo "Login failed: $response" >&2
-    return 1 2>/dev/null || exit 1
+    return 1
 fi
-
-export TOKEN="$token"
-echo "TOKEN set."

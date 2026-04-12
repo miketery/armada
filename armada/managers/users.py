@@ -7,7 +7,7 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from armada.config import settings
-from armada.modules.users.models import Session, User
+from armada.models.users import Session, User
 
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 
