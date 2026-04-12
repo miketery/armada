@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: armada
+      POSTGRES_PASSWORD: armada
+      POSTGRES_DB: armada
+    ports:
+      - "6130:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
