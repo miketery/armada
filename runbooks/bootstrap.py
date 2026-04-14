@@ -11,7 +11,7 @@ async def main():
         if existing:
             print(f"User already exists: {existing.id}")
             return
-        user = await manager.create_user("michael@tmisha.com", "password123")
+        user = await manager.create_user("michael@tmisha.com", "password123", is_superuser=True)
         print(f"Created user: {user.id} ({user.email})")
 
 

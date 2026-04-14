@@ -17,6 +17,7 @@ class UserLogin(BaseModel):
 class UserResponse(BaseModel):
     id: uuid.UUID
     email: str
+    is_superuser: bool
     created_at: datetime
     updated_at: datetime
 

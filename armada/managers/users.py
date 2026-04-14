@@ -16,9 +16,9 @@ class UserManager:
     def __init__(self, session: AsyncSession) -> None:
         self.session = session
 
-    async def create_user(self, email: str, password: str) -> User:
+    async def create_user(self, email: str, password: str, is_superuser: bool = False) -> User:
         password_hash = pwd_context.hash(password)
-        user = User(email=email, password_hash=password_hash)
+        user = User(email=email, password_hash=password_hash, is_superuser=is_superuser)
         self.session.add(user)
         await self.session.commit()
         await self.session.refresh(user)
