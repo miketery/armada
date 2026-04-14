@@ -16,7 +16,7 @@ class User(TimestampedBase):
 
 
 class Session(TimestampedBase):
-    __tablename__ = "sessions"
+    __tablename__ = "user_sessions"
 
     user_id: Mapped[uuid.UUID] = mapped_column(
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False

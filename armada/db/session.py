@@ -17,17 +17,31 @@ class DatabaseSession(AsyncSession):
     """Custom async session — extend for commit hooks, logging, etc."""
 
 
-_engine: AsyncEngine = create_async_engine(settings.database_url, pool_pre_ping=True)
-_session_factory: async_sessionmaker[DatabaseSession] = async_sessionmaker(
-    _engine,
-    expire_on_commit=False,
-    class_=DatabaseSession,
-)
+_engine: AsyncEngine | None = None
+_session_factory: async_sessionmaker[DatabaseSession] | None = None
+
+
+def _get_engine() -> AsyncEngine:
+    global _engine
+    if _engine is None:
+        _engine = create_async_engine(settings.database_url, pool_pre_ping=True)
+    return _engine
+
+
+def _get_session_factory() -> async_sessionmaker[DatabaseSession]:
+    global _session_factory
+    if _session_factory is None:
+        _session_factory = async_sessionmaker(
+            _get_engine(),
+            expire_on_commit=False,
+            class_=DatabaseSession,
+        )
+    return _session_factory
 
 
 def get_database_session() -> DatabaseSession:
     """Return a disposable database session instance."""
-    return _session_factory()
+    return _get_session_factory()()
 
 
 async def database_dependency() -> AsyncGenerator[DatabaseSession, None]:
@@ -51,4 +65,8 @@ async def get_database() -> AsyncGenerator[DatabaseSession, None]:
 
 async def dispose_engine() -> None:
     """Dispose the global engine and close pooled connections."""
-    await _engine.dispose()
+    global _engine, _session_factory
+    if _engine is not None:
+        await _engine.dispose()
+        _engine = None
+        _session_factory = None
