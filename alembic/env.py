@@ -6,6 +6,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
 from alembic import context
+from armada.config import settings
 from armada.db import AlchemyBase as Base
 from armada.models.products import Product, ProductGun  # noqa: F401
 from armada.models.users import Session, User  # noqa: F401
@@ -14,6 +15,8 @@ config = context.config
 
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
+
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 target_metadata = Base.metadata
 
