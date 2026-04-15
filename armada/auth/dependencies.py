@@ -4,6 +4,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
 from armada.db import DatabaseSession, database_dependency
+from armada.managers.products import ProductManager
 from armada.managers.users import UserManager
 from armada.models.users import User
 
@@ -30,4 +31,20 @@ async def get_current_user(
     return user
 
 
-CurrentUser = Annotated[User, Depends(get_current_user)]
+UserDependency = Annotated[User, Depends(get_current_user)]
+
+
+async def require_superuser(current_user: UserDependency) -> User:
+    if not current_user.is_superuser:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Superuser access required",
+        )
+    return current_user
+
+
+SuperUserDependency = Annotated[User, Depends(require_superuser)]
+
+
+def get_product_manager(db: Database) -> ProductManager:
+    return ProductManager(db)

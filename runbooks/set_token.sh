@@ -8,7 +8,7 @@ if [ -f .env ]; then
     set +a
 fi
 
-response=$(curl -s -X POST http://localhost:8000/users/login \
+response=$(curl -s -X POST http://localhost:8000/api/users/login \
     -H "Content-Type: application/json" \
     -d "{\"email\": \"$ARMADA_USERNAME\", \"password\": \"$PASSWORD\"}")
 
