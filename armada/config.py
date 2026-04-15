@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     database_url: str = "postgresql+asyncpg://armada:armada@localhost:6130/armada"
     session_expire_minutes: int = 1440  # 24 hours
 
-    model_config = {"env_prefix": "ARMADA_", "env_file": ".env"}
+    model_config = {"env_prefix": "ARMADA_", "env_file": ".env", "extra": "allow"}
 
 
 settings = Settings()

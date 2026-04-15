@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-zinc-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Armada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen">
+
+    <!-- Nav -->
+    <nav class="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="/" class="text-xl font-bold tracking-wider text-amber-400">ARMADA</a>
+            <div class="flex items-center gap-6 text-sm">
+                <a href="/products.html" class="text-white font-medium">Products</a>
+                <a href="/services.html" class="text-zinc-300 hover:text-white transition">Services</a>
+                <a href="/login.html" class="px-4 py-2 border border-zinc-600 rounded hover:border-amber-500 hover:text-amber-400 transition">Login</a>
+                <a href="/signup.html" class="px-4 py-2 bg-amber-500 text-zinc-950 rounded font-medium hover:bg-amber-400 transition">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-6xl mx-auto px-6 py-12">
+        <h1 class="text-3xl font-bold mb-2">Products</h1>
+        <p class="text-zinc-400 mb-8">Browse our catalog. Reserve today, pick up when you're ready.</p>
+
+        <!-- Tabs -->
+        <div class="flex gap-1 mb-8 border-b border-zinc-800">
+            <button id="tab-guns"
+                class="px-5 py-3 text-sm font-medium border-b-2 border-amber-400 text-amber-400"
+                hx-get="/api/products/browse?product_type=gun"
+                hx-target="#product-grid"
+                hx-swap="innerHTML"
+                onclick="setActiveTab(this)">
+                Guns
+            </button>
+            <button id="tab-ammo"
+                class="px-5 py-3 text-sm font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200"
+                onclick="setActiveTab(this)">
+                Ammo
+                <span class="ml-1 px-1.5 py-0.5 bg-zinc-800 rounded text-xs text-zinc-500">Soon</span>
+            </button>
+            <button id="tab-gear"
+                class="px-5 py-3 text-sm font-medium border-b-2 border-transparent text-zinc-400 hover:text-zinc-200"
+                onclick="setActiveTab(this)">
+                Gear
+                <span class="ml-1 px-1.5 py-0.5 bg-zinc-800 rounded text-xs text-zinc-500">Soon</span>
+            </button>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="product-grid"
+            class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+            hx-get="/api/products/browse?product_type=gun"
+            hx-trigger="load"
+            hx-swap="innerHTML">
+            <p class="text-zinc-500 col-span-full text-center py-12">Loading products...</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-800 py-8 mt-12">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center text-sm text-zinc-500">
+            <span>Armada &mdash; Secure Storage & Fulfillment</span>
+            <div class="flex gap-6">
+                <a href="/services.html" class="hover:text-zinc-300 transition">Services</a>
+                <a href="/" class="hover:text-zinc-300 transition">Home</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function setActiveTab(el) {
+            document.querySelectorAll('[id^="tab-"]').forEach(tab => {
+                tab.classList.remove('border-amber-400', 'text-amber-400');
+                tab.classList.add('border-transparent', 'text-zinc-400');
+            });
+            el.classList.remove('border-transparent', 'text-zinc-400');
+            el.classList.add('border-amber-400', 'text-amber-400');
+
+            if (el.id !== 'tab-guns') {
+                document.getElementById('product-grid').innerHTML =
+                    '<p class="text-zinc-400 col-span-full text-center py-12">Coming soon.</p>';
+            }
+        }
+    </script>
+
+</body>
+</html>

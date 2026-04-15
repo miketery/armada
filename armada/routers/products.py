@@ -1,10 +1,11 @@
 import uuid
+from html import escape
 
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import HTMLResponse
 
 from armada.auth.dependencies import (
     SuperUserDependency,
-    UserDependency,
     get_product_manager,
 )
 from armada.managers.products import ProductManager
@@ -30,9 +31,43 @@ async def create_gun(
     return product
 
 
+@products_router.get("/browse", response_class=HTMLResponse)
+async def browse_products(
+    product_type: str | None = "gun",
+    manager: ProductManager = Depends(get_product_manager),
+):
+    products = await manager.list_products(product_type=product_type)
+    if not products:
+        return HTMLResponse('<p class="text-zinc-400 text-center py-12">No products found.</p>')
+    cards = []
+    for p in products:
+        category_label = escape(p.category).replace("_", " ").title()
+        cards.append(f"""
+        <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-6
+                    hover:border-amber-500/50 transition-colors">
+            <div class="flex justify-between items-start mb-3">
+                <h3 class="text-lg font-semibold text-white">{escape(p.name)}</h3>
+                <span class="text-amber-400 font-bold text-lg">${p.msrp:,.2f}</span>
+            </div>
+            <p class="text-zinc-400 text-sm mb-4 line-clamp-2">{escape(p.description)}</p>
+            <div class="flex flex-wrap gap-2">
+                <span class="px-2 py-1 bg-zinc-700 rounded text-xs text-zinc-300">
+                    {escape(p.manufacturer)}</span>
+                <span class="px-2 py-1 bg-zinc-700 rounded text-xs text-zinc-300">
+                    {escape(p.caliber)}</span>
+                <span class="px-2 py-1 bg-zinc-700 rounded text-xs text-zinc-300">
+                    {escape(p.action_type)}</span>
+                <span class="px-2 py-1 bg-zinc-700 rounded text-xs text-zinc-300">
+                    {category_label}</span>
+                <span class="px-2 py-1 bg-zinc-700 rounded text-xs text-zinc-300">
+                    {p.weight_lbs} lbs</span>
+            </div>
+        </div>""")
+    return HTMLResponse("\n".join(cards))
+
+
 @products_router.get("", response_model=list[ProductGunResponse])
 async def list_products(
-    current_user: UserDependency,
     product_type: str | None = None,
     manager: ProductManager = Depends(get_product_manager),
 ):
@@ -42,7 +77,6 @@ async def list_products(
 @products_router.get("/{product_id}", response_model=ProductGunResponse)
 async def get_product(
     product_id: uuid.UUID,
-    current_user: UserDependency,
     manager: ProductManager = Depends(get_product_manager),
 ):
     product = await manager.get_by_id(product_id)

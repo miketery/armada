@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-zinc-950">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Services - Armada</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen">
+
+    <!-- Nav -->
+    <nav class="border-b border-zinc-800 bg-zinc-950/80 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+            <a href="/" class="text-xl font-bold tracking-wider text-amber-400">ARMADA</a>
+            <div class="flex items-center gap-6 text-sm">
+                <a href="/products.html" class="text-zinc-300 hover:text-white transition">Products</a>
+                <a href="/services.html" class="text-white font-medium">Services</a>
+                <a href="/login.html" class="px-4 py-2 border border-zinc-600 rounded hover:border-amber-500 hover:text-amber-400 transition">Login</a>
+                <a href="/signup.html" class="px-4 py-2 bg-amber-500 text-zinc-950 rounded font-medium hover:bg-amber-400 transition">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <section class="max-w-6xl mx-auto px-6 py-16">
+        <h1 class="text-4xl font-bold mb-4">How Armada Works</h1>
+        <p class="text-xl text-zinc-400 max-w-2xl">
+            A new model for firearms ownership. Purchase, store, and take delivery on your schedule &mdash;
+            with cryptographic proof of ownership.
+        </p>
+    </section>
+
+    <!-- 3-Step Process -->
+    <section class="border-t border-zinc-800 bg-zinc-900/50">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+            <h2 class="text-2xl font-bold mb-12 text-center">Three Simple Steps</h2>
+            <div class="grid md:grid-cols-3 gap-8">
+
+                <!-- Step 1: Order -->
+                <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-8 relative">
+                    <div class="absolute -top-4 left-6 bg-amber-500 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">1</div>
+                    <h3 class="text-xl font-semibold mb-3 mt-2">Order</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Purchase the <strong class="text-zinc-200">right to buy</strong> &mdash; a voucher
+                        functioning like a call option with a $0 strike price and no expiration.
+                    </p>
+                    <p class="text-zinc-500 text-sm">
+                        You're securing the item at today's price. No transfer occurs yet,
+                        no background check needed until pickup. Your voucher never expires.
+                    </p>
+                </div>
+
+                <!-- Step 2: Store -->
+                <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-8 relative">
+                    <div class="absolute -top-4 left-6 bg-amber-500 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">2</div>
+                    <h3 class="text-xl font-semibold mb-3 mt-2">Store</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Your equipment is held in <strong class="text-zinc-200">secure, climate-controlled storage</strong>
+                        at one of our facilities for as long as you need.
+                    </p>
+                    <p class="text-zinc-500 text-sm">
+                        Insured, monitored 24/7, and maintained in factory condition.
+                        Store for months or years &mdash; there's no rush.
+                    </p>
+                </div>
+
+                <!-- Step 3: Pickup -->
+                <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-8 relative">
+                    <div class="absolute -top-4 left-6 bg-amber-500 text-zinc-950 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm">3</div>
+                    <h3 class="text-xl font-semibold mb-3 mt-2">Pickup</h3>
+                    <p class="text-zinc-400 mb-4">
+                        Schedule pickup when you're ready. We <strong class="text-zinc-200">finalize the purchase and transfer</strong>,
+                        ensuring all legal requirements are met.
+                    </p>
+                    <p class="text-zinc-500 text-sm">
+                        Background check, paperwork, and compliance handled at the point of transfer.
+                        Walk out with your equipment, fully legal.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ownership & Cryptography -->
+    <section class="border-t border-zinc-800">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+            <div class="max-w-3xl">
+                <h2 class="text-2xl font-bold mb-6">Cryptographic Ownership</h2>
+                <p class="text-zinc-400 mb-6">
+                    Ownership and transfer rights are secured using <strong class="text-zinc-200">public key cryptography</strong>.
+                    You hold a private key that proves your claim to stored equipment.
+                </p>
+                <div class="grid sm:grid-cols-2 gap-6 mb-6">
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
+                        <h3 class="font-semibold mb-2">Digital Transfer</h3>
+                        <p class="text-zinc-400 text-sm">
+                            Your ownership key is delivered digitally. Use it to authorize pickups,
+                            transfers, or prove ownership remotely.
+                        </p>
+                    </div>
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-lg p-6">
+                        <h3 class="font-semibold mb-2">Physical Mail</h3>
+                        <p class="text-zinc-400 text-sm">
+                            Prefer something tangible? We'll mail your key on tamper-evident media
+                            to the address of your choice.
+                        </p>
+                    </div>
+                </div>
+                <p class="text-zinc-500 text-sm">
+                    <strong class="text-zinc-400">Backup option:</strong> If you opt in, standard identity verification
+                    can serve as a fallback in case your key is lost. This is optional &mdash; by default,
+                    only the key holder can authorize actions.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bring Your Own -->
+    <section class="border-t border-zinc-800 bg-zinc-900/50">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+            <div class="max-w-3xl">
+                <h2 class="text-2xl font-bold mb-4">Already Own Equipment?</h2>
+                <p class="text-zinc-400 mb-4">
+                    Deliver your existing firearms, ammunition, or gear to any Armada facility and we'll store it
+                    under the same secure conditions. Same cryptographic ownership, same climate control,
+                    same peace of mind.
+                </p>
+                <p class="text-zinc-500 text-sm">
+                    Transfer paperwork handled at intake. Your items are cataloged, photographed, and
+                    stored with the same care as newly purchased equipment.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section class="border-t border-zinc-800">
+        <div class="max-w-6xl mx-auto px-6 py-20">
+            <h2 class="text-2xl font-bold mb-4">Storage Pricing</h2>
+            <p class="text-zinc-400 mb-12">
+                Simple, transparent pricing. Every plan includes base ammunition storage.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Rifles / Shotguns -->
+                <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-8">
+                    <h3 class="text-lg font-semibold mb-1">Rifles & Shotguns</h3>
+                    <p class="text-3xl font-bold text-amber-400 mb-4">$25<span class="text-base text-zinc-400 font-normal">/mo per item</span></p>
+                    <ul class="space-y-3 text-zinc-400 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Climate-controlled, insured storage
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Includes storage for 200 rounds
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Bulk discounts: 5+ items get 15% off
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            10+ items get 25% off
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Pistols -->
+                <div class="bg-zinc-800 border border-amber-500/30 rounded-lg p-8 ring-1 ring-amber-500/20">
+                    <h3 class="text-lg font-semibold mb-1">Pistols & Revolvers</h3>
+                    <p class="text-3xl font-bold text-amber-400 mb-4">$18<span class="text-base text-zinc-400 font-normal">/mo per item</span></p>
+                    <ul class="space-y-3 text-zinc-400 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Same secure, climate-controlled storage
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Includes storage for 100 rounds
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Compact storage means lower cost
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Same bulk discounts apply
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Add-ons -->
+                <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-8">
+                    <h3 class="text-lg font-semibold mb-1">Add-Ons</h3>
+                    <p class="text-3xl font-bold text-amber-400 mb-4">&mdash;<span class="text-base text-zinc-400 font-normal"> a la carte</span></p>
+                    <ul class="space-y-3 text-zinc-400 text-sm">
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Extra ammo: $5/mo per 200 rounds
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Gear storage: $10/mo per container
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Annual plans save 2 months
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-amber-400 mt-0.5">&#10003;</span>
+                            Custom storage available on request
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="border-t border-zinc-800 bg-zinc-900/50">
+        <div class="max-w-6xl mx-auto px-6 py-16 text-center">
+            <h2 class="text-2xl font-bold mb-4">Get Started</h2>
+            <p class="text-zinc-400 mb-8">Create an account to browse products and place your first order.</p>
+            <a href="/signup.html" class="px-8 py-3 bg-amber-500 text-zinc-950 rounded-lg font-semibold hover:bg-amber-400 transition">
+                Create Account
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-zinc-800 py-8">
+        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center text-sm text-zinc-500">
+            <span>Armada &mdash; Secure Storage & Fulfillment</span>
+            <div class="flex gap-6">
+                <a href="/products.html" class="hover:text-zinc-300 transition">Products</a>
+                <a href="/" class="hover:text-zinc-300 transition">Home</a>
+            </div>
+        </div>
+    </footer>
+
+</body>
+</html>
