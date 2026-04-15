@@ -6,7 +6,7 @@ from client import get_client
 
 def me():
     with get_client() as client:
-        resp = client.get("/users/me")
+        resp = client.get("/api/users/me")
         resp.raise_for_status()
         print(json.dumps(resp.json(), indent=2))
 

@@ -29,7 +29,7 @@ class ProductManager:
         return product
 
     async def get_by_id(self, product_id: uuid.UUID) -> Product | None:
-        entity = with_polymorphic(Product, [ProductGun])
+        entity = with_polymorphic(Product, "*")
         result = await self.session.execute(
             select(entity).where(
                 entity.id == product_id,
@@ -39,7 +39,7 @@ class ProductManager:
         return result.scalar_one_or_none()
 
     async def list_products(self, product_type: str | None = None) -> list[Product]:
-        entity = with_polymorphic(Product, [ProductGun])
+        entity = with_polymorphic(Product, "*")
         stmt = select(entity).where(entity.is_deleted == False)  # noqa: E712
         if product_type is not None:
             stmt = stmt.where(entity.product_type == product_type)

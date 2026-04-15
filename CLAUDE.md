@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Armada is a FastAPI-based user authentication and session management service. Python 3.13, PostgreSQL 17 (via Docker on port 6130), fully async.
+Armada is a FastAPI-based user authentication, session management, and product catalog service. Python 3.13, PostgreSQL 17 (via Docker on port 6130), fully async. All API routes are prefixed with `/api`.
 
 ## Toolchain
 
@@ -42,6 +42,13 @@ uv run alembic downgrade -1
 uv run python runbooks/bootstrap.py          # seed test user
 source runbooks/set_token.sh                 # login and export TOKEN
 uv run python runbooks/users.py me           # test authenticated endpoint
+uv run python runbooks/seed_products.py      # seed 15 guns from data/guns.csv
+uv run python runbooks/products.py list      # list all products
+uv run python runbooks/products.py list --type gun
+uv run python runbooks/products.py create-gun --name "..." --description "..." \
+  --msrp 799 --caliber "9mm" --action-type semi-automatic \
+  --weight-lbs 1.5 --category pistol --manufacturer "..."
+uv run python runbooks/products.py update-gun <uuid> --msrp 899
 ```
 
 ## Architecture
@@ -61,11 +68,20 @@ types/        db/
 - **routers/** — FastAPI route handlers. Thin layer that delegates to managers.
 - **types/** — Pydantic schemas for API request/response validation.
 - **db/** — Database engine, async session factory, base model classes. Lazy engine init with `get_engine()`.
-- **auth/** — FastAPI dependencies for bearer token authentication. `CurrentUser` and `Database` dependency types.
+- **auth/** — FastAPI dependencies for bearer token authentication. `UserDependency`, `SuperUserDependency`, and `Database` dependency types.
 
 ### DBO Pattern
 
 The project follows a DBO (Database Object) pattern for database object handling, keeping database interaction logic organized through manager classes that wrap SQLAlchemy operations.
+
+### Products (Joined Table Inheritance)
+
+Products use SQLAlchemy joined table inheritance. `products` is the parent table (inherits `Base` with soft-delete), and child tables like `product_guns` extend it with type-specific columns. The `product_type` discriminator column controls polymorphism.
+
+- **Adding a new product type:** Create a new child model inheriting from `Product`, set `polymorphic_identity`, add a FK `id` column, and add type-specific columns. The manager uses `with_polymorphic(Product, "*")` so new types are auto-discovered.
+- **`updated_at` with inheritance:** Child-only updates don't trigger `onupdate` on the parent row. The manager explicitly sets `product.updated_at = func.now()` in update methods to ensure the parent timestamp is touched.
+- **Superuser-only mutations:** Create, update, and delete require `SuperUserDependency`. Read endpoints use `UserDependency`.
+- **Seed data:** `data/guns.csv` contains 15 firearms (3 each: semi-auto rifles, bolt-action rifles, pistols, revolvers, shotguns).
 
 ### Key Conventions
 
