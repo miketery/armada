@@ -118,7 +118,7 @@ User=${APP_USER}
 Group=${APP_USER}
 WorkingDirectory=${APP_DIR}
 EnvironmentFile=${APP_DIR}/.env
-ExecStart=/usr/local/bin/uv run uvicorn armada.main:app --host 127.0.0.1 --port 8000
+ExecStart=/usr/local/bin/uv run uvicorn armada.main:app --host 127.0.0.1 --port 9001
 Restart=on-failure
 RestartSec=5
 
