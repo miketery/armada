@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(uv run:*)"
+      "Bash(uv run:*)",
+      "WebFetch(domain:commons.wikimedia.org)",
+      "WebSearch",
+      "WebFetch(domain:www.smith-wesson.com)",
+      "WebFetch(domain:en.wikipedia.org)"
     ]
   }
 }

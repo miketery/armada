@@ -81,7 +81,8 @@ Products use SQLAlchemy joined table inheritance. `products` is the parent table
 - **Adding a new product type:** Create a new child model inheriting from `Product`, set `polymorphic_identity`, add a FK `id` column, and add type-specific columns. The manager uses `with_polymorphic(Product, "*")` so new types are auto-discovered.
 - **`updated_at` with inheritance:** Child-only updates don't trigger `onupdate` on the parent row. The manager explicitly sets `product.updated_at = func.now()` in update methods to ensure the parent timestamp is touched.
 - **Superuser-only mutations:** Create, update, and delete require `SuperUserDependency`. Read endpoints use `UserDependency`.
-- **Seed data:** `data/guns.csv` contains 15 firearms (3 each: semi-auto rifles, bolt-action rifles, pistols, revolvers, shotguns).
+- **Product images:** Each `Product` has a one-to-many relationship with `ProductImage` (FK with `ON DELETE CASCADE`). The relationship uses `lazy="selectin"` so list/get endpoints auto-load images sorted by `sort_order`. Image files live in `frontend/assets/images/` and are served at `/assets/...` (mounted in `main.py`).
+- **Seed data:** `data/guns.csv` contains 15 firearms (3 each: semi-auto rifles, bolt-action rifles, pistols, revolvers, shotguns). The `images` column is pipe-separated (`/assets/...|/assets/...`) — `seed_products.py` parses these and creates `ProductImage` rows.
 
 ### Key Conventions
 

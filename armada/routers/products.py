@@ -42,9 +42,20 @@ async def browse_products(
     cards = []
     for p in products:
         category_label = escape(p.category).replace("_", " ").title()
+        if p.images:
+            image_html = (
+                f'<img src="{escape(p.images[0].url)}" alt="{escape(p.name)}"'
+                f' class="w-full h-48 object-contain bg-zinc-900 rounded mb-4" loading="lazy">'
+            )
+        else:
+            image_html = (
+                '<div class="w-full h-48 bg-zinc-900 rounded mb-4 flex items-center'
+                ' justify-center text-zinc-600 text-sm">No image</div>'
+            )
         cards.append(f"""
         <div class="bg-zinc-800 border border-zinc-700 rounded-lg p-6
                     hover:border-amber-500/50 transition-colors">
+            {image_html}
             <div class="flex justify-between items-start mb-3">
                 <h3 class="text-lg font-semibold text-white">{escape(p.name)}</h3>
                 <span class="text-amber-400 font-bold text-lg">${p.msrp:,.2f}</span>

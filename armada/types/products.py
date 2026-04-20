@@ -5,6 +5,21 @@ from decimal import Decimal
 from pydantic import BaseModel, Field
 
 
+class ProductImageCreate(BaseModel):
+    url: str = Field(..., max_length=500)
+    alt_text: str | None = Field(None, max_length=200)
+    sort_order: int = 0
+
+
+class ProductImageResponse(BaseModel):
+    id: uuid.UUID
+    url: str
+    alt_text: str | None
+    sort_order: int
+
+    model_config = {"from_attributes": True}
+
+
 class ProductGunCreate(BaseModel):
     name: str = Field(..., max_length=200)
     description: str
@@ -14,6 +29,7 @@ class ProductGunCreate(BaseModel):
     weight_lbs: Decimal = Field(..., gt=0)
     category: str = Field(..., max_length=50)
     manufacturer: str = Field(..., max_length=200)
+    images: list[ProductImageCreate] = Field(default_factory=list)
 
 
 class ProductGunUpdate(BaseModel):
@@ -36,6 +52,7 @@ class ProductResponse(BaseModel):
     is_deleted: bool
     created_at: datetime
     updated_at: datetime
+    images: list[ProductImageResponse] = Field(default_factory=list)
 
     model_config = {"from_attributes": True}
 

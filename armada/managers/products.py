@@ -4,7 +4,7 @@ from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import with_polymorphic
 
-from armada.models.products import Product, ProductGun
+from armada.models.products import Product, ProductGun, ProductImage
 from armada.types.products import ProductGunCreate, ProductGunUpdate
 
 
@@ -23,6 +23,10 @@ class ProductManager:
             category=data.category,
             manufacturer=data.manufacturer,
         )
+        for img in data.images:
+            product.images.append(
+                ProductImage(url=img.url, alt_text=img.alt_text, sort_order=img.sort_order)
+            )
         self.session.add(product)
         await self.session.commit()
         await self.session.refresh(product)
@@ -68,3 +72,25 @@ class ProductManager:
         await self.session.commit()
         await self.session.refresh(product)
         return product
+
+    async def add_image(
+        self,
+        product_id: uuid.UUID,
+        url: str,
+        alt_text: str | None = None,
+        sort_order: int = 0,
+    ) -> ProductImage | None:
+        product = await self.get_by_id(product_id)
+        if product is None:
+            return None
+        image = ProductImage(
+            product_id=product.id,
+            url=url,
+            alt_text=alt_text,
+            sort_order=sort_order,
+        )
+        self.session.add(image)
+        product.updated_at = func.now()
+        await self.session.commit()
+        await self.session.refresh(image)
+        return image

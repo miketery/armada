@@ -10,6 +10,7 @@ from armada.routers.users import users_router
 app = FastAPI(title="Armada", version="0.1.0")
 
 FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
+ASSETS_DIR = FRONTEND_DIR / "assets"
 
 API_PREFIX = "/api"
 
@@ -17,6 +18,7 @@ app.include_router(users_router, prefix=API_PREFIX)
 app.include_router(products_router, prefix=API_PREFIX)
 
 app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+app.mount("/assets", StaticFiles(directory=ASSETS_DIR), name="assets")
 
 
 @app.get("/health")

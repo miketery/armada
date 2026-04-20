@@ -5,7 +5,17 @@ from pathlib import Path
 
 from armada.db import get_database
 from armada.managers.products import ProductManager
-from armada.types.products import ProductGunCreate
+from armada.types.products import ProductGunCreate, ProductImageCreate
+
+
+def parse_images(raw: str, product_name: str) -> list[ProductImageCreate]:
+    if not raw:
+        return []
+    return [
+        ProductImageCreate(url=url.strip(), alt_text=product_name, sort_order=i)
+        for i, url in enumerate(raw.split("|"))
+        if url.strip()
+    ]
 
 
 async def main():
@@ -23,6 +33,7 @@ async def main():
             reader = csv.DictReader(f)
             count = 0
             for row in reader:
+                images = parse_images(row.get("images", ""), row["name"])
                 data = ProductGunCreate(
                     name=row["name"],
                     description=row["description"],
@@ -32,9 +43,13 @@ async def main():
                     weight_lbs=Decimal(row["weight_lbs"]),
                     category=row["category"],
                     manufacturer=row["manufacturer"],
+                    images=images,
                 )
                 product = await manager.create_gun(data)
-                print(f"  Created: {product.name} ({product.category})")
+                print(
+                    f"  Created: {product.name} ({product.category})"
+                    f" with {len(product.images)} image(s)"
+                )
                 count += 1
 
         print(f"Seeded {count} products")
