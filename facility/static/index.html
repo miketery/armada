@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FFL License Map</title>
+    <link rel="stylesheet" href="/static/vendor/leaflet.css" />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="sidebar">
+        <header class="brand">
+          <div>
+            <h1>FFL License Map</h1>
+            <p id="dataStatus">Loading data</p>
+          </div>
+        </header>
+
+        <section class="filters" aria-label="Filters">
+          <label class="field field-wide">
+            <span>Search</span>
+            <input id="searchInput" type="search" placeholder="Name, city, ZIP, phone" />
+          </label>
+          <label class="field">
+            <span>State</span>
+            <select id="stateSelect">
+              <option value="">All states</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Type</span>
+            <select id="typeSelect">
+              <option value="">All types</option>
+            </select>
+          </label>
+          <button id="resetButton" class="reset-button" type="button">Reset</button>
+        </section>
+
+        <section class="summary" aria-label="Summary">
+          <div>
+            <span class="metric" id="totalMetric">0</span>
+            <span class="metric-label">licenses</span>
+          </div>
+          <div>
+            <span class="metric" id="visibleMetric">0</span>
+            <span class="metric-label">in view</span>
+          </div>
+          <div>
+            <span class="metric" id="clusterMetric">0</span>
+            <span class="metric-label">markers</span>
+          </div>
+        </section>
+
+        <section class="results" aria-label="Entries">
+          <div class="results-header">
+            <h2>Entries</h2>
+            <span id="resultCount"></span>
+          </div>
+          <div id="licenseList" class="license-list"></div>
+        </section>
+      </aside>
+
+      <section class="map-region" aria-label="Map">
+        <div id="map"></div>
+        <div id="mapStatus" class="map-status">Loading</div>
+      </section>
+    </main>
+
+    <script src="/static/vendor/leaflet.js"></script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
+
